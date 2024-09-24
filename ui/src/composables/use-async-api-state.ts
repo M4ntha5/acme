@@ -1,9 +1,9 @@
-import type { UseAsyncStateOptions, UseAsyncStateReturn } from '@vueuse/core';
-import { refDebounced, useAsyncState } from '@vueuse/core';
-import type { UnwrapNestedRefs } from 'vue';
-import type { ParsedError } from '@/lib/parse-error';
-import { parseError } from '@/lib/parse-error';
-import { reactive, ref, watch } from 'vue';
+import type { UseAsyncStateOptions, UseAsyncStateReturn } from "@vueuse/core";
+import { refDebounced, useAsyncState } from "@vueuse/core";
+import type { UnwrapNestedRefs } from "vue";
+import type { ParsedError } from "@/lib/parse-error";
+import { parseError } from "@/lib/parse-error";
+import { reactive, ref, watch } from "vue";
 
 type UseAsyncApiStateReturn<
   Data,
@@ -12,7 +12,7 @@ type UseAsyncApiStateReturn<
 > = UnwrapNestedRefs<
   Omit<
     UseAsyncStateReturn<Data, Params, Shallow>,
-    'error' | 'execute' | 'state'
+    "error" | "execute" | "state"
   >
 > & {
   error?: ParsedError;
@@ -49,7 +49,7 @@ export function useAsyncApiState<
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): Omit<UseAsyncApiStateReturn<Data, Params, Shallow>, 'state'> {
+): Omit<UseAsyncApiStateReturn<Data, Params, Shallow>, "state"> {
   const defaultOptions: UseAsyncStateOptions<Shallow, Data> = {
     immediate: false,
     throwError: true,
@@ -65,7 +65,7 @@ export function useAsyncApiState<
   const error = ref<ParsedError | undefined>();
   watch(
     () => asyncState.error.value,
-    newError => {
+    (newError) => {
       error.value = newError ? parseError(newError) : undefined;
     },
   );

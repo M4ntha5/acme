@@ -1,9 +1,9 @@
-import axios from 'axios';
-import type { AxiosInstance } from 'axios';
-import qs from 'qs';
-import { SubscribersService } from '@/api/services/SubscribersService';
-import { SubscribersImportService } from '@/api/services/SubscribersImportService';
-import { Environment } from '@/lib/environment';
+import axios from "axios";
+import type { AxiosInstance } from "axios";
+import qs from "qs";
+import { SubscribersService } from "@/api/services/SubscribersService";
+import { SubscribersImportService } from "@/api/services/SubscribersImportService";
+import { Environment } from "@/lib/environment";
 
 export class ApplicationApiClient {
   public readonly subscribersImport: SubscribersImportService;
@@ -13,13 +13,13 @@ export class ApplicationApiClient {
   constructor() {
     const apiProtocol = Environment.apiProtocol ?? window.location.protocol;
     const apiHostName = Environment.apiHostName ?? window.location.hostname;
-    const apiPort = Environment.apiPort ? `:${Environment.apiPort}` : '';
+    const apiPort = Environment.apiPort ? `:${Environment.apiPort}` : "";
     const apiBaseUrl = `${apiProtocol}//${apiHostName}${apiPort}`;
 
     this.axiosInstance = axios.create({
       baseURL: apiBaseUrl,
       paramsSerializer: {
-        serialize: params => qs.stringify(params, { indices: false }),
+        serialize: (params) => qs.stringify(params, { indices: false }),
       },
     });
 

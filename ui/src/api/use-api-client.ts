@@ -1,4 +1,4 @@
-import { ApplicationApiClient } from '@/api/application-api-client';
+import { ApplicationApiClient } from "@/api/application-api-client";
 
 let apiClient: ApplicationApiClient | undefined = undefined;
 

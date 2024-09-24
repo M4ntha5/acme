@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PrimeToast from 'primevue/toast';
+import PrimeToast from "primevue/toast";
 </script>
 
 <template>

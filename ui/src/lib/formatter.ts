@@ -1,6 +1,6 @@
-import type { App } from 'vue';
-import { format } from 'date-fns';
-import { nl } from 'date-fns/locale';
+import type { App } from "vue";
+import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 
 export class Formatter {
   private static _instance: Formatter | undefined;
@@ -25,10 +25,22 @@ export class Formatter {
     dateFormat?: string | null | undefined,
   ): string | undefined {
     if (!input) return;
-    const date = typeof input === 'string' ? new Date(input) : input;
-    return format(date, dateFormat ?? 'yyyy-M-dd', {
+    const date = typeof input === "string" ? new Date(input) : input;
+    return format(date, dateFormat ?? "yyyy-M-dd", {
       locale: nl,
     });
+  }
+
+  toLocaleDateString(input: Date | string): string;
+  toLocaleDateString(
+    input?: Date | string | null | undefined,
+  ): string | undefined;
+  toLocaleDateString(
+    input?: Date | string | null | undefined,
+  ): string | undefined {
+    if (!input) return undefined;
+    const date = typeof input === "string" ? new Date(input) : input;
+    return date.toLocaleDateString();
   }
 
   static install = (app: App) => {
@@ -40,7 +52,7 @@ export function useFormat() {
   return Formatter.instance;
 }
 
-declare module '@vue/runtime-core' {
+declare module "@vue/runtime-core" {
   export interface ComponentCustomProperties {
     $format: Formatter;
   }

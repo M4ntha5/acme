@@ -1,9 +1,9 @@
-import { useToast } from 'primevue/usetoast';
-import type { ToastMessageOptions } from 'primevue/toast';
+import { useToast } from "primevue/usetoast";
+import type { ToastMessageOptions } from "primevue/toast";
 
 type AppToastOptions = Omit<
   ToastMessageOptions,
-  'severity' | 'summary' | 'detail' | 'group'
+  "severity" | "summary" | "detail" | "group"
 >;
 
 export const createAppToast = (group?: string) => {
@@ -16,7 +16,7 @@ export const createAppToast = (group?: string) => {
     options?: AppToastOptions,
   ) => {
     toast.add({
-      severity: 'success',
+      severity: "success",
       summary: header,
       detail: details,
       life: defaultToastLife,
@@ -31,7 +31,7 @@ export const createAppToast = (group?: string) => {
     options?: AppToastOptions,
   ) => {
     toast.add({
-      severity: 'info',
+      severity: "info",
       summary: header,
       detail: details,
       life: defaultToastLife,
@@ -46,7 +46,7 @@ export const createAppToast = (group?: string) => {
     options?: AppToastOptions,
   ) => {
     toast.add({
-      severity: 'warn',
+      severity: "warn",
       summary: header,
       detail: details,
       life: defaultToastLife,
@@ -61,7 +61,7 @@ export const createAppToast = (group?: string) => {
     options?: AppToastOptions,
   ) => {
     toast.add({
-      severity: 'error',
+      severity: "error",
       summary: header,
       detail: details,
       life: defaultToastLife,

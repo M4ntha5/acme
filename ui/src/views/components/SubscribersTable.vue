@@ -2,35 +2,55 @@
 import type {
   GetSubscribersRequestFilterDto,
   SubscriberDto,
-} from '@/api/dtos/SubscribersDto';
+} from "@/api/dtos/SubscribersDto";
+import { watchDebounced } from "@vueuse/core";
 
-defineEmits<{
-  clearFiltersClicked: [];
-}>();
-
-defineProps<{
+const props = defineProps<{
   showFilters?: boolean;
   isLoading?: boolean;
   subscribers: Array<SubscriberDto>;
+  filters?: GetSubscribersRequestFilterDto;
 }>();
 
-//TODO fix filters
-const filters = defineModel<GetSubscribersRequestFilterDto>('filters');
+const emit = defineEmits<{
+  clearFiltersClicked: [];
+  filtersChanged: [GetSubscribersRequestFilterDto];
+}>();
+
+const tableFilters = ref<GetSubscribersRequestFilterDto>({});
+
+watch(
+  () => props.filters,
+  () => {
+    tableFilters.value = { ...props.filters };
+  },
+);
+
+watchDebounced(
+  () => tableFilters.value,
+  () => {
+    emit("filtersChanged", tableFilters.value);
+  },
+  { debounce: 500, deep: true },
+);
 </script>
 
 <template>
   <div v-if="showFilters" class="flex gap-3">
-    <PrimeInputText v-model="filters?.email" placeholder="Email" />
+    <PrimeInputText v-model="tableFilters.email" placeholder="Email" />
     <PrimeCalendar
-      v-model="filters?.expirationDateFrom"
+      v-model="tableFilters.expirationDateFrom"
       placeholder="Date From"
     />
-    <PrimeCalendar v-model="filters?.expirationDateTo" placeholder="Date To" />
+    <PrimeCalendar
+      v-model="tableFilters.expirationDateTo"
+      placeholder="Date To"
+    />
     <PrimeButton
       :disabled="
-        !filters?.expirationDateFrom &&
-        !filters?.expirationDateTo &&
-        !filters?.email
+        !tableFilters?.expirationDateFrom &&
+        !tableFilters?.expirationDateTo &&
+        !tableFilters?.email
       "
       severity="help"
       label="Clear Filters"

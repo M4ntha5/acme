@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useApplicationApiClient } from '@/api/use-api-client';
-import { useAppToast } from '@/composables/use-app-toast';
-import { useAsyncApiState } from '@/composables/use-async-api-state';
-import SubscribersTable from '@/views/components/SubscribersTable.vue';
+import { useApplicationApiClient } from "@/api/use-api-client";
+import { useAppToast } from "@/composables/use-app-toast";
+import { useAsyncApiState } from "@/composables/use-async-api-state";
+import SubscribersTable from "@/views/components/SubscribersTable.vue";
 
-const visible = defineModel<boolean>('visible');
+const visible = defineModel<boolean>("visible");
 const api = useApplicationApiClient();
 const fileUploader = ref();
 const toast = useAppToast();
@@ -12,7 +12,7 @@ const toast = useAppToast();
 const importSubscribers = useAsyncApiState(async () => {
   const formData = new FormData();
   selectedFiles.value?.forEach((f: File) => {
-    formData.append('image', f);
+    formData.append("image", f);
   });
 
   const response = await api.subscribersImport.importSubscribers(formData);
@@ -23,21 +23,20 @@ const onImportClick = async () => {
   const response = await importSubscribers.execute();
 
   if (response.errors.length) {
-    toast.error('Error importing subscribers');
+    toast.error("Error importing subscribers");
     return;
   } else if (response.expiredSubscribers.length) {
-    toast.warn('Only valid subscribers imported');
+    toast.warn("Only valid subscribers imported");
     return;
   } else if (!response.errors.length && !response.expiredSubscribers.length) {
-    toast.success('Subscribers successfully imported without errors');
+    toast.success("Subscribers successfully imported without errors");
     visible.value = false;
   }
 };
 
 const selectedFiles = computed(() => {
   const files = fileUploader.value?.files;
-
-  if (Array.isArray(files) && files.every(item => item instanceof File)) {
+  if (Array.isArray(files) && files.every((item) => item instanceof File)) {
     return files;
   }
 

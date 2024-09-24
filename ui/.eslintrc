@@ -1,0 +1,86 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:vue/vue3-recommended",
+        "eslint:recommended",
+        "@vue/typescript/recommended",
+        "@vue/prettier"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2021
+    },
+    "plugins": [],
+    "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "no-debugger": "warn",
+        "no-console": "warn",
+        "vue/no-v-model-argument": "off",
+        "vue/no-multiple-template-root": "off",
+        "vue/require-default-prop": "off",
+        "vue/attribute-hyphenation": "error",
+        "vue/no-v-for-template-key": "off",
+        "vue/no-setup-props-destructure": "warn",
+        "vue/multi-word-component-names": "warn",
+        "vue/v-on-event-hyphenation": [
+            "warn", "always", { "autofix": true }],
+        "vue/block-lang": [
+            "error",
+            {
+                "script": {
+                    "lang": ["ts", "tsx"]
+                },
+                "style": {
+                    "lang": "scss"
+                }
+            }
+        ],
+        "vue/no-empty-component-block": "error",
+        "vue/component-api-style": [
+            "error", [
+                "script-setup", "composition"
+            ]],
+        "vue/component-name-in-template-casing": [
+            "error",
+            "PascalCase",
+            {
+                "registeredComponentsOnly": false
+            }
+        ],
+        "vue/component-tags-order": [
+            "error",
+            {
+                "order": ["script", "template", "style"]
+            }
+        ],
+        "vue/no-undef-components": [
+            "error",
+            {
+                "ignorePatterns": [
+                    "^prime(\\-\\w+)+",
+                    "^headless(\\-\\w+)+",
+                    "^router(\\-\\w+)+"
+                ]
+            }
+        ],
+        "vue/html-self-closing": ["error", {
+            "html": {
+                "normal": "never",
+                "void": "always"
+            }
+        }]
+    }
+}

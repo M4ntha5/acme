@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useApplicationApiClient } from '@/api/use-api-client';
-import { useAsyncApiState } from '@/composables/use-async-api-state';
-import SubscribersImportDialog from '@/views/components/SubscribersImportDialog.vue';
-import { useSessionStorage, watchDebounced } from '@vueuse/core';
-import type { GetSubscribersRequestFilterDto } from '@/api/dtos/SubscribersDto';
-import SubscribersTable from '@/views/components/SubscribersTable.vue';
+import { onMounted, ref } from "vue";
+import { useApplicationApiClient } from "@/api/use-api-client";
+import { useAsyncApiState } from "@/composables/use-async-api-state";
+import SubscribersImportDialog from "@/views/components/SubscribersImportDialog.vue";
+import { useSessionStorage } from "@vueuse/core";
+import type { GetSubscribersRequestFilterDto } from "@/api/dtos/SubscribersDto";
+import SubscribersTable from "@/views/components/SubscribersTable.vue";
+import { useFormat } from "@/lib/formatter";
 
 const api = useApplicationApiClient();
 const showImportDialog = ref<boolean>(false);
+const format = useFormat();
 
 const filters = useSessionStorage<GetSubscribersRequestFilterDto>(
-  'subscriber-list-filters',
+  "subscriber-list-filters",
   {},
 );
 
@@ -19,18 +21,32 @@ onMounted(async () => {
   await subscribers.execute();
 });
 
+// TODO use mapper to map to filters
 const subscribers = useAsyncApiState(async () => {
-  const response = await api.subscribers.getAll(filters.value);
+  const response = await api.subscribers.getAll({
+    email: filters.value?.email,
+    expirationDateFrom: format.toLocaleDateString(
+      filters.value?.expirationDateFrom,
+    ),
+    expirationDateTo: format.toLocaleDateString(
+      filters.value?.expirationDateTo,
+    ),
+  });
   return response.data;
 });
 
-watchDebounced(
-  () => filters.value,
-  async () => {
-    await subscribers.execute();
-  },
-  { debounce: 500, deep: true },
-);
+const onFiltersChanged = async (newFilters: GetSubscribersRequestFilterDto) => {
+  filters.value = newFilters;
+  await subscribers.execute();
+};
+
+const clearFilters = () => {
+  filters.value = {
+    email: undefined,
+    expirationDateFrom: undefined,
+    expirationDateTo: undefined,
+  };
+};
 </script>
 
 <template>
@@ -46,11 +62,12 @@ watchDebounced(
     </template>
     <SubscribersTable
       v-else
-      v-model:filters="filters"
+      show-filters
       :subscribers="subscribers.state"
       :is-loading="subscribers.isLoading"
-      show-filters
-      @clear-filters-clicked="filters = {}"
+      :filters="filters"
+      @clear-filters-clicked="clearFilters"
+      @filters-changed="onFiltersChanged"
     />
   </div>
 
