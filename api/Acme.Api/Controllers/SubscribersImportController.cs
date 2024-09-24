@@ -4,30 +4,41 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Acme.Api.Controllers;
 
+[ApiController]
 [Route("api/[controller]")]
 public class SubscribersImportController(ISubscribersImporter subscribersImporter) : Controller
 {
     [HttpPost]
-    public async Task<FileImportResponseDto> Import()
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<FileImportResponseDto>> Import()
     {
-        var fileModels = new List<FileModel>();
-        foreach (var file in HttpContext.Request.Form.Files)
+        // TODO use Result pattern in a future
+        try
         {
-            await using var fileStream = file.OpenReadStream();
-            var content = new byte[file.Length];
-            _ = await fileStream.ReadAsync(content, 0, (int)file.Length);
-
-            fileModels.Add(new FileModel
+            var fileModels = new List<FileModel>();
+            foreach (var file in HttpContext.Request.Form.Files)
             {
-                Content = content,
-                ContentType = file.ContentType,
-                ContentLength = file.Length,
-                Name = file.Name,
-            });
+                await using var fileStream = file.OpenReadStream();
+                var content = new byte[file.Length];
+                _ = await fileStream.ReadAsync(content, 0, (int)file.Length);
+
+                fileModels.Add(new FileModel
+                {
+                    Content = content,
+                    ContentType = file.ContentType,
+                    ContentLength = file.Length,
+                    Name = file.Name,
+                });
+            }
+        
+            var result = await subscribersImporter.ImportSubscribers(fileModels);
+
+            return Ok(new FileImportResponseDto(result.Errors, result.ExpiredSubscribers));
         }
-        
-        var result = await subscribersImporter.ImportSubscribers(fileModels);
-        
-        return new FileImportResponseDto(result.Errors, result.ExpiredSubscribers);
+        catch (Exception ex)
+        {
+            return Problem($"Error importing subscribers. {ex.Message}");
+        }
     }
 }

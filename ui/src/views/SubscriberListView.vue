@@ -7,6 +7,7 @@ import { useSessionStorage } from "@vueuse/core";
 import type { GetSubscribersRequestFilterDto } from "@/api/dtos/SubscribersDto";
 import SubscribersTable from "@/views/components/SubscribersTable.vue";
 import { useFormat } from "@/lib/formatter";
+import SubscriberFilters from "@/views/components/SubscriberFilters.vue";
 
 const api = useApplicationApiClient();
 const showImportDialog = ref<boolean>(false);
@@ -40,12 +41,9 @@ const onFiltersChanged = async (newFilters: GetSubscribersRequestFilterDto) => {
   await subscribers.execute();
 };
 
-const clearFilters = () => {
-  filters.value = {
-    email: undefined,
-    expirationDateFrom: undefined,
-    expirationDateTo: undefined,
-  };
+const clearFilters = async () => {
+  filters.value = {};
+  await subscribers.execute();
 };
 </script>
 
@@ -57,18 +55,18 @@ const clearFilters = () => {
 
     <h2 class="text-center">Subscribers</h2>
 
-    <template v-if="!subscribers.state">
-      <div class="flex justify-content-center">No records yet</div>
+    <template v-if="subscribers.state">
+      <SubscriberFilters
+        :filters="filters"
+        @clear-filters-clicked="clearFilters"
+        @filters-changed="onFiltersChanged($event)"
+      />
+      <SubscribersTable
+        show-filters
+        :subscribers="subscribers.state"
+        :is-loading="subscribers.isLoading"
+      />
     </template>
-    <SubscribersTable
-      v-else
-      show-filters
-      :subscribers="subscribers.state"
-      :is-loading="subscribers.isLoading"
-      :filters="filters"
-      @clear-filters-clicked="clearFilters"
-      @filters-changed="onFiltersChanged"
-    />
   </div>
 
   <SubscribersImportDialog v-model:visible="showImportDialog" />

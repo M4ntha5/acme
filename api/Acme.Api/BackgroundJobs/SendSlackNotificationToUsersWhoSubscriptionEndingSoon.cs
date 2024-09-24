@@ -4,7 +4,7 @@ using Acme.Utilities.BackgrouondJobs;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
-namespace Acme.Api.BackgrouondJobs;
+namespace Acme.Api.BackgroundJobs;
 
 public class SendSlackNotificationToUsersWhoSubscriptionEndingSoon(ApplicationDbContext applicationDbContext, ISlackNotificationSender slackNotificationSender, ILogger<SendEmailNotificationToUsersWhoSubscriptionEndingSoon> logger) : BackgroundJob(logger)
 {
