@@ -1,10 +1,17 @@
 version: '3'
 
 services:
-  acme-core-test-postgres:
-    image: postgres:15
+  acme-subscirbers-core-test-postgress:
+    image: postgres:16.3
     ports:
       - "10432:5432"
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: acme-testing
+      POSTGRES_DB: testing-subscribers
+  acme-subscirbers-importer-core-test-postgress:
+    image: postgres:16.3
+    ports:
+      - "10433:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testing-subscribers-importer

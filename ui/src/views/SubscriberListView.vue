@@ -69,5 +69,8 @@ const clearFilters = async () => {
     </template>
   </div>
 
-  <SubscribersImportDialog v-model:visible="showImportDialog" />
+  <SubscribersImportDialog
+    v-model:visible="showImportDialog"
+    @dialog-closed="subscribers.execute()"
+  />
 </template>

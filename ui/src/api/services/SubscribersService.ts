@@ -1,8 +1,5 @@
 import type { AxiosInstance, AxiosPromise } from "axios";
-import type {
-  GetSubscribersResponseDto,
-  SubscriberDto,
-} from "@/api/dtos/SubscribersDto";
+import type { SubscriberDto } from "@/api/dtos/SubscribersDto";
 
 export class SubscribersService {
   constructor(public readonly httpRequest: AxiosInstance) {}

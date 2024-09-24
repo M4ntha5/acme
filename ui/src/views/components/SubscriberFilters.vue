@@ -5,7 +5,7 @@ const props = defineProps<{
   filters?: GetSubscribersRequestFilterDto;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   clearFiltersClicked: [];
   filtersChanged: [GetSubscribersRequestFilterDto];
 }>();

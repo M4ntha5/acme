@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useApplicationApiClient } from "@/api/use-api-client";
 import { useAppToast } from "@/composables/use-app-toast";
 import { useAsyncApiState } from "@/composables/use-async-api-state";
 import SubscribersTable from "@/views/components/SubscribersTable.vue";
+import { useApplicationApiImporterClient } from "@/api/use-api-importer-client";
 
+const emit = defineEmits<{
+  dialogClosed: [];
+}>();
 const visible = defineModel<boolean>("visible");
-const api = useApplicationApiClient();
+const api = useApplicationApiImporterClient();
 const fileUploader = ref();
 const toast = useAppToast();
 
@@ -42,6 +45,11 @@ const selectedFiles = computed(() => {
 
   return undefined;
 });
+
+const onCloseClick = () => {
+  visible.value = false;
+  emit("dialogClosed");
+};
 </script>
 
 <template>
@@ -94,7 +102,7 @@ const selectedFiles = computed(() => {
         severity="danger"
         label="Close"
         data-test="buttonClose"
-        @click="visible = false"
+        @click="onCloseClick"
       />
     </template>
   </PrimeDialog>

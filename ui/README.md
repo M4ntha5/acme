@@ -1,24 +1,23 @@
 # acme-ui
 
 ## Project setup
+`cd` into project directory, then run
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+ npm run build-production
 ```
 
-### Lints and fixes files
+### Formats and fixes files
 ```
-npm run lint
+npm run format
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

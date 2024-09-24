@@ -4,13 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "preview-dev": "npm run build-dev && vite preview --port 5090 --mode development",
-    "preview-dev-host": "npm run build-dev && vite preview --port 5090 --mode development --host",
-    "build": "run-p type-check build-only",
     "preview": "vite preview",
-    "build-only": "vite build",
     "build-production": "vite build",
-    "lint": "eslint ./src --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
   "dependencies": {

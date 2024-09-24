@@ -2,11 +2,9 @@ import axios from "axios";
 import type { AxiosInstance } from "axios";
 import qs from "qs";
 import { SubscribersService } from "@/api/services/SubscribersService";
-import { SubscribersImportService } from "@/api/services/SubscribersImportService";
 import { Environment } from "@/lib/environment";
 
 export class ApplicationApiClient {
-  public readonly subscribersImport: SubscribersImportService;
   public readonly subscribers: SubscribersService;
   public readonly axiosInstance: AxiosInstance;
 
@@ -23,7 +21,6 @@ export class ApplicationApiClient {
       },
     });
 
-    this.subscribersImport = new SubscribersImportService(this.axiosInstance);
     this.subscribers = new SubscribersService(this.axiosInstance);
   }
 }
